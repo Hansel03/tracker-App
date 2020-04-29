@@ -1,0 +1,50 @@
+ion-slide {
+    display: block;
+    --bullet-background: grey;
+    --bullet-background-active: #8890B2;
+}
+
+img {
+    max-width: 400px;
+}
+
+.slide-img-padding {
+    padding: 40px;
+}
+
+h3 {
+    font-size: 30px;
+    font-weight: lighter;
+    margin-bottom: 60px;
+}
+
+.btn-primary {
+    height: 60px;
+}
+
+.continue {
+    font-size: 25px;
+}
+
+.icon-continue {
+    margin-top: 5px;
+}
+
+// eliminar border de footer
+ion-footer {
+    &.footer-md::before {
+        background-image: none;
+    }
+}
+
+ion-header {
+    &.header-md::before {
+        background-image: none;
+    }
+}
+
+@media screen and (max-heigth: 775px) {
+    img {
+        width: 70%;
+    }
+}
