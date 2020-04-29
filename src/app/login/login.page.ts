@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, Platform } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import { UsuarioService } from '../services/usuario.service';
-import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -23,8 +23,7 @@ export class LoginPage implements OnInit {
     private alertController: AlertController,
     private loadingController: LoadingController,
     private usuarioService: UsuarioService,
-    private nativeStorage: NativeStorage,
-    private platform: Platform
+    private router: Router
   ) {}
 
   ngOnInit() {}
@@ -81,7 +80,8 @@ export class LoginPage implements OnInit {
           console.log(usuario);
           this.clave = clave;
           this.user = usuario;
-          this.guardarStorage();
+          this.usuarioService.guardarStorage(clave);
+          this.router.navigate(['home']);
         } else {
           this.noUsuario();
         }
@@ -93,38 +93,5 @@ export class LoginPage implements OnInit {
       message: mensaje,
     });
     await loading.present();
-  }
-
-  public guardarStorage() {
-    if (this.platform.is('cordova')) {
-      //Celular
-      this.nativeStorage.setItem('clave', this.clave).then(
-        () => console.log('Stored item!'),
-        (error) => console.error('Error storing item', error)
-      );
-    } else {
-      //Escritorio
-      localStorage.setItem('clave', this.clave);
-    }
-  }
-
-  public cargarStorage() {
-    return new Promise((resolve, reject) => {
-      if (this.platform.is('cordova')) {
-        //Celular
-        this.nativeStorage.getItem('clave').then(
-          (data) => {
-            console.log('clave ' + data);
-            this.clave = data;
-            resolve(true);
-          },
-          (error) => console.error(error)
-        );
-      } else {
-        //Escritorio
-        this.clave = localStorage.getItem('clave');
-        resolve(true);
-      }
-    });
   }
 }
