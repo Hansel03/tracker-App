@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { environment } from '../environments/environment';
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
 
 //firebase
 import { AngularFireModule } from '@angular/fire';
@@ -29,6 +30,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    NativeStorage,
   ],
   bootstrap: [AppComponent],
 })
