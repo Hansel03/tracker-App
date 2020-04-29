@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
+import { UsuarioService } from '../services/usuario.service';
 
 @Component({
   selector: 'app-login',
@@ -14,9 +15,13 @@ export class LoginPage implements OnInit {
     speed: 400,
   };
 
+  clave: string;
+  user: any = {};
+
   constructor(
     private alertController: AlertController,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private usuarioService: UsuarioService
   ) {}
 
   ngOnInit() {}
@@ -44,7 +49,7 @@ export class LoginPage implements OnInit {
           text: 'Ingresar',
           handler: (data: any) => {
             console.log(data);
-            this.loading(data.username);
+            this.consultar(data.username);
           },
         },
       ],
@@ -53,14 +58,36 @@ export class LoginPage implements OnInit {
     await alert.present();
   }
 
-  private async loading(username) {
+  private async noUsuario() {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: 'Usuario incorrecto',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
+
+  private consultar(clave) {
+    this.loading('Verificando...');
+    this.usuarioService
+      .verificaUsuario(clave)
+      .subscribe(async (usuario: any) => {
+        this.loadingController.dismiss();
+        if (usuario) {
+          console.log(usuario);
+          this.clave = clave;
+          this.user = usuario;
+        } else {
+          this.noUsuario();
+        }
+      });
+  }
+
+  private async loading(mensaje: string) {
     const loading = await this.loadingController.create({
-      message: 'Verificando...',
-      duration: 2000,
+      message: mensaje,
     });
     await loading.present();
-
-    const { role, data } = await loading.onDidDismiss();
-    console.log('Loading dismissed!');
   }
 }
