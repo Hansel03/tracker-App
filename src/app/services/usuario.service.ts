@@ -9,6 +9,7 @@ import { Router, CanActivate } from '@angular/router';
   providedIn: 'root',
 })
 export class UsuarioService implements CanActivate {
+  public idUsuario: string;
   constructor(
     private firestore: AngularFirestore,
     private platform: Platform,
@@ -28,12 +29,16 @@ export class UsuarioService implements CanActivate {
     if (this.platform.is('cordova')) {
       //Celular
       this.nativeStorage.setItem('clave', key).then(
-        () => console.log('Stored item!'),
+        () => {
+          this.idUsuario = key;
+          console.log('Stored item!');
+        },
         (error) => console.error('Error storing item', error)
       );
     } else {
       //Escritorio
       localStorage.setItem('clave', key);
+      this.idUsuario = key;
     }
   }
 
@@ -44,7 +49,7 @@ export class UsuarioService implements CanActivate {
         this.nativeStorage.getItem('clave').then(
           (data) => {
             console.log('clave ' + data);
-            // this.clave = data;
+            this.idUsuario = data;
             resolve(true);
           },
           (error) => {
@@ -55,6 +60,7 @@ export class UsuarioService implements CanActivate {
       } else {
         //Escritorio
         if (localStorage.getItem('clave')) {
+          this.idUsuario = localStorage.getItem('clave');
           resolve(true);
         } else {
           resolve(false);
