@@ -85,4 +85,13 @@ export class UsuarioService implements CanActivate {
 
     return true;
   }
+
+  borrarUsuario() {
+    this.idUsuario = null;
+    if (this.platform.is('cordova')) {
+      this.nativeStorage.clear();
+    } else {
+      localStorage.clear();
+    }
+  }
 }

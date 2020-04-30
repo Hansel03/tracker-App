@@ -1,8 +1,9 @@
 <ion-header [translucent]="true">
     <ion-toolbar>
         <ion-title>
-            Mi nombre
+            {{user.nombre}}
         </ion-title>
+        <ion-button slot="end" Fill="clear" color="danger" (click)="salir()">Salir</ion-button>
     </ion-toolbar>
 </ion-header>
 

@@ -5,19 +5,25 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/firestore';
 import { UsuarioService } from './usuario.service';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UbicacionService {
   taxista: AngularFirestoreDocument<any>;
+  private watch: Subscription;
 
   constructor(
     private geolocation: Geolocation,
     private firestore: AngularFirestore,
     private usuarioService: UsuarioService
-  ) {
-    this.taxista = firestore.doc(`/usuarios/${usuarioService.idUsuario}`);
+  ) {}
+
+  public initTaxista() {
+    this.taxista = this.firestore.doc(
+      `/usuarios/${this.usuarioService.idUsuario}`
+    );
   }
 
   public initGeolocalizacion() {
@@ -31,8 +37,7 @@ export class UbicacionService {
         this.updateCoords(resp.coords);
 
         // Creamos un observable que verifique el movimiento del gps
-        const watch = this.geolocation.watchPosition();
-        watch.subscribe((data) => {
+        this.watch = this.geolocation.watchPosition().subscribe((data) => {
           // data can be a set of coordinates, or an error (if an error occurred).
           // data.coords.latitude
           // data.coords.longitude
@@ -50,5 +55,13 @@ export class UbicacionService {
       lat: coords.latitude,
       lng: coords.longitude,
     });
+  }
+
+  detenerUbicacion() {
+    try {
+      this.watch.unsubscribe();
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
