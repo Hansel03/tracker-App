@@ -7,8 +7,8 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false">
-        <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="false">
+    <agm-map [latitude]="user.lat" [longitude]="user.lng" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false">
+        <agm-marker [latitude]="user.lat" [longitude]="user.lng" [markerDraggable]="false">
         </agm-marker>
     </agm-map>
 </ion-content>
