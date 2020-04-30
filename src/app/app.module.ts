@@ -16,6 +16,9 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 
+// plugins
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -31,6 +34,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     NativeStorage,
+    Geolocation,
   ],
   bootstrap: [AppComponent],
 })
