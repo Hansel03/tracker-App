@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import { UsuarioService } from '../services/usuario.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class LoginPage implements OnInit, OnDestroy {
   // Optional parameters to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options.
   slideOpts = {
     initialSlide: 0,
@@ -22,8 +21,7 @@ export class LoginPage implements OnInit {
   constructor(
     private alertController: AlertController,
     private loadingController: LoadingController,
-    private usuarioService: UsuarioService,
-    private router: Router
+    private usuarioService: UsuarioService
   ) {}
 
   ngOnInit() {}
@@ -70,22 +68,22 @@ export class LoginPage implements OnInit {
     await alert.present();
   }
 
-  private consultar(clave) {
-    this.loading('Verificando...');
-    this.usuarioService
-      .verificaUsuario(clave)
-      .subscribe(async (usuario: any) => {
-        this.loadingController.dismiss();
-        if (usuario) {
-          console.log(usuario);
-          this.clave = clave;
-          this.user = usuario;
-          this.usuarioService.guardarStorage(clave);
-          this.router.navigate(['home']);
-        } else {
-          this.noUsuario();
-        }
-      });
+  private async consultar(clave) {
+    const loading = await this.loadingController.create({
+      message: 'Verificando...',
+    });
+    await loading.present();
+    this.usuarioService.verificaUsuario(clave).subscribe((usuario: any) => {
+      this.loadingController.dismiss();
+      if (usuario) {
+        console.log(usuario);
+        this.clave = clave;
+        this.user = usuario;
+        this.usuarioService.guardarStorage(clave);
+      } else {
+        this.noUsuario();
+      }
+    });
   }
 
   private async loading(mensaje: string) {
@@ -93,5 +91,11 @@ export class LoginPage implements OnInit {
       message: mensaje,
     });
     await loading.present();
+    const { role, data } = await loading.onDidDismiss();
+    console.log('Loading dismissed!');
+  }
+
+  ngOnDestroy() {
+    this.loadingController.dismiss();
   }
 }

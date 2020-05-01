@@ -18,9 +18,10 @@ export class UsuarioService implements CanActivate {
   ) {}
 
   public verificaUsuario(clave: string) {
-    clave.toLocaleLowerCase();
     return this.firestore
-      .collection(`usuarios`, (ref) => ref.where('clave', '==', clave))
+      .collection(`usuarios`, (ref) =>
+        ref.where('clave', '==', clave.toLowerCase())
+      )
       .valueChanges()
       .pipe(map((usuario: any) => usuario[0]));
   }
@@ -32,6 +33,7 @@ export class UsuarioService implements CanActivate {
         () => {
           this.idUsuario = key;
           console.log('Stored item!');
+          this.router.navigate(['home']);
         },
         (error) => console.error('Error storing item', error)
       );
@@ -74,7 +76,7 @@ export class UsuarioService implements CanActivate {
     this.cargarStorage().then((data) => {
       if (data) {
         // logged in so return true
-        this.router.navigate(['/home']);
+        this.router.navigate(['home']);
         return false;
       }
 

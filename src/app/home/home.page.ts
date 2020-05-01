@@ -9,8 +9,8 @@ import { UsuarioService } from '../services/usuario.service';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
-  lat: number;
-  lng: number;
+  lat = 0;
+  lng = 0;
   user: any = {};
   zoom: number;
   constructor(
@@ -19,8 +19,11 @@ export class HomePage {
     private usuarioService: UsuarioService
   ) {
     this.zoom = 15;
-    this.ubicacionService.initGeolocalizacion();
     this.ubicacionService.initTaxista();
+    this.ubicacionService.initGeolocalizacion();
+
+    console.log('taxista');
+    console.log(this.ubicacionService.taxista.valueChanges());
 
     this.ubicacionService.taxista.valueChanges().subscribe((data) => {
       console.log(data);
