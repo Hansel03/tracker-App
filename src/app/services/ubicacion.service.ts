@@ -21,15 +21,19 @@ export class UbicacionService {
   ) {}
 
   public initTaxista() {
+    console.log('primero');
+
     this.taxista = this.firestore.doc(
       `/usuarios/${this.usuarioService.idUsuario}`
     );
   }
 
   public initGeolocalizacion() {
+    console.log('segundo');
     this.geolocation
       .getCurrentPosition()
       .then((resp) => {
+        console.log('tercero');
         // resp.coords.latitude
         // resp.coords.longitude
         console.log(resp.coords);
@@ -51,6 +55,7 @@ export class UbicacionService {
   }
 
   private updateCoords(coords: any) {
+    console.log('cuarto');
     this.taxista.update({
       lat: coords.latitude,
       lng: coords.longitude,

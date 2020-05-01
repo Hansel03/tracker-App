@@ -19,9 +19,7 @@ export class UsuarioService implements CanActivate {
 
   public verificaUsuario(clave: string) {
     return this.firestore
-      .collection(`usuarios`, (ref) =>
-        ref.where('clave', '==', clave.toLowerCase())
-      )
+      .collection(`usuarios`, (ref) => ref.where('clave', '==', clave))
       .valueChanges()
       .pipe(map((usuario: any) => usuario[0]));
   }

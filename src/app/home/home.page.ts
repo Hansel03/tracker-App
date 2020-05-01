@@ -23,9 +23,9 @@ export class HomePage {
     this.ubicacionService.initGeolocalizacion();
 
     console.log('taxista');
-    console.log(this.ubicacionService.taxista.valueChanges());
 
     this.ubicacionService.taxista.valueChanges().subscribe((data) => {
+      console.log('cinco');
       console.log(data);
       this.user = data;
     });

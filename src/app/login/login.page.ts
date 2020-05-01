@@ -73,26 +73,19 @@ export class LoginPage implements OnInit, OnDestroy {
       message: 'Verificando...',
     });
     await loading.present();
-    this.usuarioService.verificaUsuario(clave).subscribe((usuario: any) => {
-      this.loadingController.dismiss();
-      if (usuario) {
-        console.log(usuario);
-        this.clave = clave;
-        this.user = usuario;
-        this.usuarioService.guardarStorage(clave);
-      } else {
-        this.noUsuario();
-      }
-    });
-  }
-
-  private async loading(mensaje: string) {
-    const loading = await this.loadingController.create({
-      message: mensaje,
-    });
-    await loading.present();
-    const { role, data } = await loading.onDidDismiss();
-    console.log('Loading dismissed!');
+    this.usuarioService
+      .verificaUsuario(clave.toLowerCase())
+      .subscribe((usuario: any) => {
+        this.loadingController.dismiss();
+        if (usuario) {
+          console.log(usuario);
+          this.clave = usuario.clave;
+          this.user = usuario;
+          this.usuarioService.guardarStorage(usuario.clave);
+        } else {
+          this.noUsuario();
+        }
+      });
   }
 
   ngOnDestroy() {
