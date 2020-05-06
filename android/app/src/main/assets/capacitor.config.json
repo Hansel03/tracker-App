@@ -1,8 +1,14 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "tracker",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "www",
-  "cordova": {}
+    "appId": "io.ionic.starter",
+    "appName": "tracker",
+    "bundledWebRuntime": false,
+    "npmClient": "npm",
+    "webDir": "www",
+    "cordova": {},
+    "plugins": {
+        "SplashScreen": {
+            "launchShowDuration": 5000,
+            "backgroundColor": "#C7E1AD"
+        }
+    }
 }

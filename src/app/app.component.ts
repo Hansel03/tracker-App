@@ -7,7 +7,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss']
+  styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
   constructor(
@@ -16,12 +16,20 @@ export class AppComponent {
     private statusBar: StatusBar
   ) {
     this.initializeApp();
+    this.exitApp();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+    });
+  }
+
+  exitApp() {
+    this.platform.backButton.subscribeWithPriority(1, () => {
+      // tslint:disable-next-line: no-string-literal
+      navigator['app'].exitApp();
     });
   }
 }
